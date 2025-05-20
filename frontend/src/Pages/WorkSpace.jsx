@@ -5,32 +5,34 @@ import FlowForm from "@/Components/FlowForm";
 import WorkflowLabel from "@/WorkFlow/WorkflowLabel";
 // zustand
 import useWorkflowStore from "@/store/workflowspace";
+import { createWorkLabel, getAllWorkLabels } from "@/api/worklabel";
+import WorkflowLabelsList from "@/WorkFlow/WorkflowLabelList";
 
 const WorkSpace = () => {
-  const { workflows, addWorkflow } = useWorkflowStore();
 
-  // Workflows state: load from localStorage on first render
-
-  // const [workflows, setWorkflows] = useState(() => {
-  //   const saved = localStorage.getItem("workflows");
-  //   return saved ? JSON.parse(saved) : [];
-  // });
-
+  const { workflows, addWorkflow, setWorkflows } = useWorkflowStore();
   const [showFlowForm, setShowFlowForm] = useState(false);
 
-  // // Add new workflow to list and save to localStorage
-  // const handleAddWorkflow = (workflow) => {
-  //   const updated = [...workflows, workflow]; // create updated array
-  //   setWorkflows(updated); // update state
-  //   localStorage.setItem("workflows", JSON.stringify(updated)); // save to localStorage
-  //   setShowFlowForm(false); // close modal
-  // }
+  useEffect(() => {
+    const fetchWorkflows = async () => {
+      try {
+        const res = await getAllWorkLabels();
+        setWorkflows(res.data);
+      } catch (error) {
+        console.log("Failed to fetch worklables", error);
+      }
+    };
+    fetchWorkflows();
+  }, []);
 
-  // adding workflow to local storage using zustand
-
-  const handleAddWorkflow = (workflow) => {
-    addWorkflow(workflow);
-    setShowFlowForm(false);
+  const handleAddWorkflow = async (workflow) => {
+    try {
+      const res = await createWorkLabel(workflow);
+      addWorkflow(res.data);
+      setShowFlowForm(false);
+    } catch (error) {
+      console.error("Failed to create workflow", error);
+    }
   };
 
   const handleCreateClick = () => {
@@ -83,15 +85,7 @@ const WorkSpace = () => {
         {!showFlowForm && workflows.length > 0 && (
           <div className="mt-10 flex justify-center">
             <div className="w-full max-w-4xl space-y-4">
-              {workflows.map((workflow, index) => (
-                <WorkflowLabel
-                  key={index}
-                  id={workflow.id || index}
-                  title={workflow.title}
-                  description={workflow.description}
-                  editLink={'/workspace/editor/1'}
-                />
-              ))}
+              <WorkflowLabelsList/>
             </div>
           </div>
         )}

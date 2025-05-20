@@ -1,6 +1,5 @@
 import React from "react";
-import { cn } from "@/lib/utils"; // if you're using className utilities
-// import { LucideIcon } from "lucide-react"; // optional type for icon
+import { cn } from "@/lib/utils";
 
 const EditorSideBarButton = ({ icon: Icon, label, className, ...props }) => {
   return (

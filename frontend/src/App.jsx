@@ -41,7 +41,7 @@ function App() {
 
           <Route path="/workspace/editor/:id" element={<Editor />} />
         </Routes>
-      </div>
+      </div>{" "}
     </div>
   );
 }

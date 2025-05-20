@@ -1,15 +1,16 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const connectToDb = require("./utils/database");
-
 const userRoutes = require("./routes/userauth.route");
-const workspaceRoute = require("./routes/workspace.route");
+const workspaceRoute = require("./routes/worklabel.route");
 
 const PORT = process.env.PORT || 8000;
 const server = express();
 
 connectToDb();
 
+server.use(cors());
 server.use(express.json());
 
 server.get("/", (req, res) => {
@@ -17,6 +18,7 @@ server.get("/", (req, res) => {
 });
 
 server.use("/api/auth", userRoutes);
+
 server.use("/workspace", workspaceRoute);
 
 server.listen(PORT, () => {

@@ -2,7 +2,7 @@ import { File, ShuffleIcon, Trash2 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const WorkflowLabel = ({ id, title, description, editLink }) => {
+const WorkflowLabel = ({ id, title, description, editLink,onDelete }) => {
   return (
     <div className="bg-white border border-dashed border-gray-400 rounded-lg shadow-md p-6 w-full">
       <div className="flex items-start gap-3">
@@ -28,7 +28,7 @@ const WorkflowLabel = ({ id, title, description, editLink }) => {
             )}
           </div>
           <div className="">
-            <button className="bg-gray-400/40 border-2 border-dashed border-red-600 border-rounded p-4 rounded-full text-red-800">
+            <button aria-label={`Delet workflow label ${title}`} className="bg-gray-400/40 border-2 border-dashed border-red-600 border-rounded p-4 rounded-full text-red-800" onClick={onDelete}>
               <Trash2 />
             </button>
           </div>

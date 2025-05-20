@@ -5,15 +5,13 @@ const useWorkflowStore = create((set) => ({
   workflows: [], //workflows are null at starting
 
   selectedWorkflow: null, //no selected workflow
-  
-  setWorkflow: (newWorkflows) => set({ workflows: newWorkflows }),
-  
+
+  setWorkflows: (workflows) => set({ workflows }),
+
   addWorkflow: (workflow) =>
     set((state) => ({
       workflows: [...state.workflows, workflow],
     })),
-  
-    setSelectedWorkflow: (workflow) => set({ selectedWorkflow: workflow }),
 }));
 
 export default useWorkflowStore;

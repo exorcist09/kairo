@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import { loginUser, signupUser } from "@/api/auth";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,14 +10,32 @@ export default function Auth() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(isLogin ? "Logging in..." : "Signing up...", formData);
+    try {
+      if (isLogin) {
+        const res = await loginUser(formData.email, formData.password);
+        console.log("Login Successful", res.data);
+        navigate("/dashboard");
+      } else {
+        const res = await signupUser(
+          formData.name,
+          formData.email,
+          formData.password
+        );
+        console.log("Signup Successful:", res.data);
+        setIsLogin(true);
+      }
+    } catch (error) {
+      console.error("Auth error:->", error.message || "Unknown error");
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -79,7 +98,6 @@ export default function Auth() {
               : "Already have an account? Log In"}
           </button>
         </div>
-
 
         <div className="bg-gray-200 p-6 rounded-xl shadow-md w-80">
           <div className="space-y-6">

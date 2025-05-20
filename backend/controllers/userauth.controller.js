@@ -17,7 +17,7 @@ exports.signupUser = async (req, res) => {
     user = new UserModel({ name, email, password: hashedPassword });
     await user.save();
 
-    res.status(201).json({ message: "User Create Successfully" });
+    res.status(201).json({ message: "User Created Successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal Server error" });
   }
@@ -32,7 +32,7 @@ exports.loginUser = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (isMatch) {
+    if (!isMatch) {
       return res.status(401).json({ message: "Email or Password is wrong" });
     }
     // jwt
