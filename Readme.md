@@ -9,12 +9,13 @@ Kairo is a visual job scheduler built with the MERN stack and **React Flow** for
 
 ##  Tech Stack
 
-- **Frontend**: React.js, TailwindCSS, Axios
-- **FlowEditor**:React Flow,
+- **Frontend**: React.js, Chart.js, Shadcn, Radix-UI TailwindCSS, Axios
+- **FlowEditor**:React-Flow, ViewPort
+- **State Management**: Zustand
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB with Mongoose
-- **Authentication**: JWT (JSON Web Tokens)
-- **State Management**: Zustand
+- **Authentication and other**: JWT (JSON Web Tokens) and Bcrypt
+- **Data Structure and Algorithm Used** : Kahn Algorithm (a topological sothing algorithm used for Directed Acyclic graph) in developing the execution of the workflow
 
 ---
 
@@ -33,9 +34,9 @@ Kairo is a visual job scheduler built with the MERN stack and **React Flow** for
 ### Prerequisites
 
 - Node.js & npm
-- MongoDB installed or Atlas cluster
+- MongoDB installed(offline) or Atlas cluster(online)
 
-### Setup
+### Setup to run locally 
 
 #### 1. Clone the repository
 
@@ -45,14 +46,14 @@ cd kairo
 ```
 #### 2. Setup Backend
 ``` 
-cd server
+cd backend
 npm install
 npm run dev
 ```
 
 #### 3. Setup Frontend
 ```
-cd server
+cd frontend
 npm install
 npm run dev
 ```

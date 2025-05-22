@@ -2,6 +2,7 @@ const UserModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/jwt");
+const userModel = require("../models/user.model");
 
 exports.signupUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -53,3 +54,40 @@ exports.logoutUser = async (req, res) => {
 };
 
 // TODO :--> logout client side se banana hai kyuki jwt stateless hai toh uske pass token ka koi acess nhi hota
+
+exports.linkedAccount = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { service, data } = req.body;
+    if (!service || !data) {
+      return res.status(400).json({ message: "Service and data required" });
+    }
+    const encryptedData = { ...data };
+    if (data.password) {
+      const salt = await bcrypt.genSalt(8);
+      const hashedPassword = await bcrypt.hash(data.password, salt);
+      encryptedData.password = hashedPassword;
+    }
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "No user found" });
+    }
+
+    const exisitingIndex = user.linkedAccounts.findIndex(
+      (acc) => acc.provider.toLowerClass() === service.toLowerCase()
+    );
+    if (existingIndex >= 0) {
+      user.linkedAccounts[existingIndex].data = encryptedData;
+      user.linkedAccounts[existingIndex].linkedAt = new Date();
+    } else {
+      user.linkedAccounts.push({ provider: service, data: encryptedData });
+    }
+
+    await user.save();
+    return res.status(200).json({ message: `${service} linked successfully` });
+  } catch (error) {
+    console.error("Link account error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

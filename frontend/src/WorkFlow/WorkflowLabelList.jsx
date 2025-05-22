@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WorkflowLabel from "./WorkflowLabel";
 import { getAllWorkLabels, deleteWorkLabel } from "../api/worklabel";
+import { SyncLoader } from "react-spinners";
 
 const WorkflowLabelsList = () => {
   const [labels, setLabels] = useState([]);
@@ -34,21 +35,27 @@ const WorkflowLabelsList = () => {
   if (loading)
     return (
       <div className="flex items-center justify-center">
-        <p className="text-5xl text-blue-600">Loading..</p>
+        <p className="text-5xl text-blue-600">
+          <SyncLoader color="blue" />
+        </p>
       </div>
     );
 
   return (
     <div className="space-y-4">
-      {labels.length === 0 && <p className="flex items-center justify-center font-bold text-2xl uppercase">No labels found.</p>}
+      {labels.length === 0 && (
+        <p className="flex items-center justify-center font-bold text-2xl uppercase">
+          No labels found.
+        </p>
+      )}
       {labels.map(({ _id, title, description }) => (
         <WorkflowLabel
           key={_id}
           id={_id}
           title={title}
           description={description}
-          editLink={`/workspace/editor/${_id}`} // Adjust route as needed
-          onDelete={() => handleDelete(_id)} // pass handler
+          editLink={`/workspace/editor/${_id}`}
+          onDelete={() => handleDelete(_id)}
         />
       ))}
     </div>
