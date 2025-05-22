@@ -1,4 +1,9 @@
-# Kairo - Job Scheduler and Management WebApp 
+
+<div>
+<img src="./frontend/src/assets/logo_readme.jpeg" alt="Kairo Logo" width="200"/><h2> Kairo - Job Schedular and Management Webapp</h2>
+</div>
+
+---
 
 Kairo is a visual job scheduler built with the MERN stack and **React Flow** for an interactive flow editor. It allows users to create, manage, and visualize job sequences easily.
 

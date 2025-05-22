@@ -7,55 +7,64 @@ import {
   addEdge,
   applyNodeChanges,
   applyEdgeChanges,
-} from "@xyflow/react"; // or "react-flow-renderer" depending on your install
-
+} from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import Node from "./EditorNode/Node";
 import EditorSidebar from "./EditorSideBar";
+import EmailNode from "./nodes/EmailNode";
+import PaymentNode from "./nodes/PaymentNode";
+import DelayNode from "./nodes/DelayNode";
+import TriggerNode from "./nodes/TriggerNode";
+import FileUploadNode from "./nodes/FileUploadNode";
+import GoogleDriveNode from "./nodes/GoogleDriveNode";
+import ConditionNode from "./nodes/LogicNode";
+
+const nodeTypes = {
+  emailNode: EmailNode,
+  paymentNode: PaymentNode,
+  delayNode: DelayNode,
+  triggerNode: TriggerNode,
+  fileUploadNode: FileUploadNode,
+  driveNode: GoogleDriveNode,
+  logicNode: ConditionNode,
+};
 
 const fitViewOptions = { padding: 1 };
 
-const initialNodes = [
-  // can start empty or with some initial nodes
-];
-
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-    style: { stroke: "red" },
-  },
-];
-
-const FlowEditor = () => {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
+const FlowEditor = ({ nodes, setNodes, edges, setEdges }) => {
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
+    [setNodes]
   );
 
   const onEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
+    [setEdges]
   );
 
   const onConnect = useCallback(
     (connection) => setEdges((eds) => addEdge(connection, eds)),
-    []
+    [setEdges]
   );
 
   // Function to add new node from sidebar button
-  const addNode = () => {
+  const addNode = (type) => {
     const id = (nodes.length + 1).toString();
+
+    const initialDataMap = {
+      emailNode: { email: "" },
+      paymentNode: { amount: "", currency: "INR" },
+      delayNode: { duration: 0 },
+      triggerNode: { condition: "" },
+      fileUploadNode: { file: null, fileName: "" },
+    };
+
     const newNode = {
       id,
-      type: "customNode", // or your node type
+      type: type,
       position: { x: 250, y: 150 + nodes.length * 80 },
-      data: { label: `New Node ${id}`, description: "Created from sidebar" },
+      data: initialDataMap[type] || {},
     };
+
     setNodes((nds) => [...nds, newNode]);
   };
 
@@ -70,10 +79,10 @@ const FlowEditor = () => {
         fitViewOptions={fitViewOptions}
         fitView
         className="h-full w-full"
-        nodeTypes={{ customNode: Node }}
+        nodeTypes={nodeTypes}
       >
         <Controls position="top-left" />
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+        <Background variant={BackgroundVariant.Lines} gap={12} size={1} />
       </ReactFlow>
 
       {/* Pass addNode to sidebar */}

@@ -13,6 +13,14 @@ const WorkLabelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    nodes: {
+      type: Array,
+      default: [],
+    },
+    edges: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );

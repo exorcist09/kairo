@@ -7,7 +7,7 @@ exports.createWorkLabel = async (req, res) => {
     await newLabel.save();
     res.status(201).json(newLabel);
   } catch (error) {
-    console.error("Error creating worklabel", error.message);
+    console.error("Error creating workLabel", error.message);
     res.status(500).json({ message: "Error Creating work Label" });
   }
 };
@@ -41,11 +41,28 @@ exports.deleteWorkLabel = async (req, res) => {
     if (!deleteLabel) {
       return res
         .status(404)
-        .json({ message: "WorkLable not found, Hence cannot be deleted" });
+        .json({ message: "WorkLabel not found, Hence cannot be deleted" });
     }
     res.status(200).json({ message: "WorkLabel deleted Sucessfully" });
   } catch (error) {
     console.error("Unable to delete worklabel", error.message);
     res.status(500).json({ message: "Unable to delete worklabel" });
+  }
+};
+
+exports.updateWorkLabel = async (req, res) => {
+  try {
+    const { nodes, edges } = req.body;
+    const updated = await WorkLabelSchema.findByIdAndUpdate(
+      req.params.id,
+      { nodes, edges },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ message: "WorkLabel not found" });
+    }
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating workflow label" });
   }
 };

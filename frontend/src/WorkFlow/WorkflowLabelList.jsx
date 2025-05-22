@@ -47,7 +47,7 @@ const WorkflowLabelsList = () => {
           id={_id}
           title={title}
           description={description}
-          editLink={`/editor/${_id}`} // Adjust route as needed
+          editLink={`/workspace/editor/${_id}`} // Adjust route as needed
           onDelete={() => handleDelete(_id)} // pass handler
         />
       ))}
