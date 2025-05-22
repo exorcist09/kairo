@@ -4,7 +4,7 @@ import Topbar from "./Topbar";
 import LogoHolder from "./LogoHolder";
 import FlowEditor from "./FlowEditor";
 import EditorSidebar from "./EditorSideBar";
-import { saveWorkflow, getWorkflow } from "@/api/workflow";
+import { saveWorkflow, getWorkflow, executeWorkflow } from "@/api/workflow";
 
 import { useParams } from "react-router-dom";
 
@@ -37,10 +37,25 @@ const Editor = () => {
     }
   };
 
+  const handleExecute = async () => {
+    try {
+      const response = await executeWorkflow({ nodes, edges });
+      console.log("workflow executed", response.data);
+
+      alert("Workflow Executed Sucessfully");
+    } catch (error) {
+      console.error("Execution Error", error);
+    }
+  };
+
   return (
     <ReactFlowProvider>
       <div className="flex flex-col h-screen w-full overflow-hidden">
-        <Topbar title="1" handleSave={handleSave} />
+        <Topbar
+          title="1"
+          handleSave={handleSave}
+          handleExecute={handleExecute}
+        />
         <div className="flex-1 flex overflow-hidden mt-16">
           <EditorSidebar />
 

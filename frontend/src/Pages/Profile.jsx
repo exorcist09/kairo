@@ -111,9 +111,9 @@ const Profile = () => {
         {/* Avatar and Info Form */}
         <div className="flex flex-col items-center text-center mb-8">
           <img
-            src={avatar}
-            alt="User Avatar"
-            className="w-18 h-20 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-blue-600 z-0"
+            src="https://i.pravatar.cc/80?img=12"
+            alt="avatar"
+            className="rounded-full w-28 h-28"
           />
         </div>
 
