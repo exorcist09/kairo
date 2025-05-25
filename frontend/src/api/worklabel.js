@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+ import axiosInstance from "./axios";
 
 export const createWorkLabel = (workspace) => {
     return axiosInstance.post("/workspace", workspace);

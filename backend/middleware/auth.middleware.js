@@ -12,7 +12,7 @@ exports.authMiddleware = (req, res, next) => {
   const token = authHeader.split(" ")[1]; // taking out jwt token from the authHeader kyuki it somewhat looks liek this --> Authorization : Bearer  jwtTOken--> over here jwtTOken is present on the 1 position
   try {
     const decoded = verifyToken(token);
-    req.user = decoded; // attach user info to request for next middleware/handlers
+    req.user = decoded.user; // attach user info to request for next middleware/handlers
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid Token" });

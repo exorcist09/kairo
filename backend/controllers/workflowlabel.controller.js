@@ -14,6 +14,7 @@ exports.createWorkLabel = async (req, res) => {
 
 exports.getAllWorkLabels = async (req, res) => {
   try {
+    // const userId = req.user._id;
     const labels = await WorkLabelSchema.find();
     res.json(labels);
   } catch (error) {

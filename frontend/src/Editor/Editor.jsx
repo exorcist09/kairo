@@ -40,9 +40,9 @@ const Editor = () => {
   const handleExecute = async () => {
     try {
       const response = await executeWorkflow({ nodes, edges });
-      console.log("workflow executed", response.data);
+      console.log("Workflow Execution started", response.data);
 
-      alert("Workflow Executed Sucessfully");
+      alert("Execution Started");
     } catch (error) {
       console.error("Execution Error", error);
     }

@@ -9,7 +9,7 @@ Kairo is a visual job scheduler built with the MERN stack and **React Flow** for
 
 ##  Tech Stack
 
-- **Frontend**: React.js, Chart.js, Shadcn, Radix-UI TailwindCSS, Axios
+- **Frontend**: React.js, Recharts, Shadcn, Radix-UI TailwindCSS, Axios
 - **FlowEditor**:React-Flow, ViewPort
 - **State Management**: Zustand
 - **Backend**: Node.js, Express.js

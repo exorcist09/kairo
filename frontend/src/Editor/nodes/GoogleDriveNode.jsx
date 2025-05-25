@@ -3,7 +3,7 @@ import { Handle, Position } from "@xyflow/react";
 import { X } from "lucide-react";
 
 const GoogleDriveNode = ({ data, onChange }) => {
-  const [folderName, setFolderName] = useState(data?.folderName || "");
+  const [file, setFile] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
 
   const handleDelete = () => {
@@ -12,16 +12,16 @@ const GoogleDriveNode = ({ data, onChange }) => {
 
   if (!isVisible) return null;
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setFolderName(value);
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
     if (onChange) {
-      onChange({ ...data, folderName: value });
+      onChange({ ...data, file: selectedFile });
     }
   };
 
   return (
-    <div className="bg-[#1e1e1e] p-6 rounded-md w-56 text-white font-sans shadow-lg flex flex-col items-center">
+    <div className="bg-[#1e1e1e] p-6 rounded-md w-56 text-white font-sans shadow-lg flex flex-col items-center relative">
       <button
         onClick={handleDelete}
         className="absolute top-1 right-1 border rounded-full flex items-center justify-center p-1 m-2 bg-gray-600 border-gray-600 text-white hover:text-red-400"
@@ -30,6 +30,7 @@ const GoogleDriveNode = ({ data, onChange }) => {
         <X size={18} />
       </button>
 
+      {/* React Flow Handles */}
       <Handle
         type="target"
         id="top"
@@ -42,8 +43,6 @@ const GoogleDriveNode = ({ data, onChange }) => {
         position={Position.Right}
         className="w-2 h-2 bg-white rounded-full"
       />
-
-      {/* Sending outputs (sources) */}
       <Handle
         type="source"
         id="bottom"
@@ -58,18 +57,19 @@ const GoogleDriveNode = ({ data, onChange }) => {
       />
 
       <h3 className="text-center text-lg font-semibold mb-4">Drive Node</h3>
-      <input
-        type="text"
-        value={folderName}
-        onChange={handleChange}
-        placeholder="Folder Name"
-        className="w-full p-2 rounded-md text-black focus:outline-none"
-        required
-      />
-      <small className="text-gray-400 mt-3 text-center">
-        If not specified, a new folder named <em>new</em> will be created.
-      </small>
 
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="w-full p-1 bg-white text-black rounded-md text-sm cursor-pointer"
+      />
+
+      {file && (
+        <p className="text-xs text-gray-400 mt-2 text-center">
+          File: <span className="text-white">{file.name}</span>
+        </p>
+      )}
+      <p className="text-sm text-gray-100/40">Select the file you want to upload to drive</p>
     </div>
   );
 };

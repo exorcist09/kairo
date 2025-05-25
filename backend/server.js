@@ -13,11 +13,12 @@ connectToDb();
 
 server.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*", // or "*" during testing
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true, // agar cookies/auth use kar rahe ho toh
+    credentials: true,
   })
 );
+
 server.use(express.json());
 
 server.get("/", (req, res) => {

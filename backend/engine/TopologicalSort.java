@@ -5,13 +5,11 @@ public class TopologicalSort {
         Map<Integer, Integer> inDegree = new HashMap<>();
         Map<Integer, List<Integer>> graph = new HashMap<>();
 
-        // graph and inDegree Initialize
         for (int node : nodes) {
             inDegree.put(node, 0);
             graph.put(node, new ArrayList<>());
         }
 
-        // Build graph and inDegree
         for (int[] edge : edges) {
             int from = edge[0];
             int to = edge[1];
@@ -19,7 +17,6 @@ public class TopologicalSort {
             inDegree.put(to, inDegree.get(to) + 1);
         }
 
-        // Queue for nodes with 0 in-degree
         Queue<Integer> queue = new LinkedList<>();
         for (Map.Entry<Integer, Integer> entry : inDegree.entrySet()) {
             if (entry.getValue() == 0) {

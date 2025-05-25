@@ -7,6 +7,7 @@ const {
   deleteWorkLabel,
   updateWorkLabel,
 } = require("../controllers/workflowlabel.controller");
+const { authMiddleware } = require("../middleware/auth.middleware");
 
 router.get("/", getAllWorkLabels);
 router.get("/:id", getAllWorkLabelbyId);

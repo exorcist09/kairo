@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: "Email or Password is wrong" });
     }
     // jwt
-    const token = generateToken({ userId: user._id }); //user._id means MnogoDb unique Identifier hai har user dockerment ja, isme ek object bana rhae hai jisme userId hai aur uski value user._id (coming from mongodb) hai
+    const token = generateToken({ userId: user._id, name: user.name }); //user._id means MnogoDb unique Identifier hai har user dockerment ja, isme ek object bana rhae hai jisme userId hai aur uski value user._id (coming from mongodb) hai
 
     res.status(200).json({ message: "Login Successful", token });
   } catch (error) {
@@ -53,7 +53,7 @@ exports.logoutUser = async (req, res) => {
   }
 };
 
-// TODO :--> logout client side se banana hai kyuki jwt stateless hai toh uske pass token ka koi acess nhi hota
+// TODO:Done :--> logout client side se banana hai kyuki jwt stateless hai toh uske pass token ka koi acess nhi hota
 
 exports.linkedAccount = async (req, res) => {
   try {

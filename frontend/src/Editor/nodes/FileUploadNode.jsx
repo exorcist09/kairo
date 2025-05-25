@@ -1,4 +1,4 @@
-import { Handle,Position } from "@xyflow/react";
+import { Handle, Position } from "@xyflow/react";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -6,7 +6,7 @@ const FileUploadNode = ({ data, onChange }) => {
   const [fileName, setFileName] = useState(data?.fileName || "");
   const [isVisible, setIsVisible] = useState(true);
   const handleDelete = () => {
-    setIsVisible(false); // Hides the node visually
+    setIsVisible(false);
   };
 
   if (!isVisible) return null;
@@ -76,7 +76,6 @@ const FileUploadNode = ({ data, onChange }) => {
       <small className="text-gray-400 mt-2 text-center">
         Upload a file to use in this node.
       </small>
-
     </div>
   );
 };

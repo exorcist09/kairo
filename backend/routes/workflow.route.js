@@ -11,7 +11,7 @@ const {
 router.post("/save/:id", saveWorkflow);
 router.get("/save/:id", getWorkflowById);
 
-router.post("/executeworkflow", executeWorkflow);
-router.post("/executeworkflow/:id", executeWorkflowById);
+router.post("/execute", executeWorkflow);
+router.post("/execute/:id", executeWorkflowById);
 
 module.exports = router;

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
-import avatar from "@/assets/1.jpg";
 import {
   Github,
   Youtube,
@@ -13,6 +12,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+import avatar from "../assets/avatar.jpeg"
 
 const accounts = [
   {
@@ -46,12 +47,13 @@ const accounts = [
     linked: false,
     fields: [
       { label: "username", name: "string", type: "text" },
-      { label: "password", name: "string", type: "password" },
+      { label: "password", name: "password", type: "password" },
     ],
   },
 ];
 
 const Profile = () => {
+  const [Gmail, SetGmail] = useState("User");
   // State to hold input values for each account's fields
   const [accountData, setAccountData] = useState(accounts.map(() => ({})));
 
@@ -97,6 +99,39 @@ const Profile = () => {
     }
   };
 
+  const getUsername = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return "Guest";
+    }
+    const decoded = jwtDecode(token);
+    return decoded.name || "User";
+  };
+
+  // fetching gmail from the backend in order to show that
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      SetGmail("cannot fetch details");
+      return;
+    }
+    try {
+      const res = axios.get("/api/user/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.data && res.data.email) {
+        SetGmail(res.data.email);
+      } else {
+        SetGmail("Email Not found");
+      }
+    } catch (error) {
+      console.log("Token decode error", error);
+      SetGmail("abc@xyz.com");
+    }
+  }, []);
+  const getEmail = () => {};
+
   return (
     <div className="h-screen flex flex-col relative px-4">
       {/* Top Header */}
@@ -111,9 +146,9 @@ const Profile = () => {
         {/* Avatar and Info Form */}
         <div className="flex flex-col items-center text-center mb-8">
           <img
-            src="https://i.pravatar.cc/80?img=12"
+            src={avatar}
             alt="avatar"
-            className="rounded-full w-28 h-28"
+            className="rounded-full w-28 h-28 mix-blend-mode: multiply"
           />
         </div>
 
@@ -125,7 +160,7 @@ const Profile = () => {
             </label>
             <input
               type="text"
-              defaultValue="Adarsh Verma"
+              defaultValue={getUsername()}
               className="w-full px-4 py-2 sm:px-5 sm:py-3 border rounded-md text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </div>
@@ -137,7 +172,7 @@ const Profile = () => {
             </label>
             <input
               type="email"
-              value="adarsh.verma@gmail.com"
+              value={Gmail}
               disabled
               className="w-full px-4 py-2 sm:px-5 sm:py-3 border rounded-md bg-gray-100 text-gray-500 text-base sm:text-lg cursor-not-allowed"
             />

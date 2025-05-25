@@ -1,13 +1,17 @@
 const topologicalSort = require("../engine/workflowEngine");
 const WorkflowSchema = require("../models/workflow.model");
-const { handleDelayNode, handleEmailNode, paymentHandleNode } = require("../nodeHandlers/node.handler");
+const {
+  handleDelayNode,
+  handleEmailNode,
+  paymentHandleNode,
+} = require("../nodeHandlers/node.handler");
 
 exports.saveWorkflow = async (req, res) => {
   const { nodes, edges } = req.body;
   const workLabelId = req.params.id;
 
   try {
-    let workflow = await WorkflowSchema.findOne({ workLabelId }); 
+    let workflow = await WorkflowSchema.findOne({ workLabelId });
 
     if (workflow) {
       workflow.nodes = nodes;
@@ -23,7 +27,7 @@ exports.saveWorkflow = async (req, res) => {
     await workflow.save();
     res.status(200).json({ message: "Workflow Saved" });
   } catch (error) {
-    console.error("Error in saveWorkflow:", error); 
+    console.error("Error in saveWorkflow:", error);
     res.status(500).json({ message: "Error Saving Workflow", error });
   }
 };
@@ -40,51 +44,59 @@ exports.getWorkflowById = async (req, res) => {
   }
 };
 
-// for runnning nodes in the workspace
 exports.executeWorkflow = async (req, res) => {
   try {
-    const { nodes, edges, nodeData } = req.body;
-    //ye data body se aayega jisme nodes with random level store honge
-    console.log("Received Workflow:,", { nodes, edges, nodeData });
+    const { nodes, edges } = req.body;
 
-    // passign it to topologicalsort function in order to get the sorted level taki pata chal saki ki kon si node phele perform karni
+    console.log("Received Workflow:,", { nodes, edges });
+
     const sortedNodes = topologicalSort(nodes, edges);
     console.log("Topological sorting done workflow:,", { sortedNodes });
 
-    // execution of nodes in order
+    // Create a map from node ID to node object
+    const nodeMap = new Map();
+    nodes.forEach((node) => nodeMap.set(node.id, node));
+
     for (const nodeId of sortedNodes) {
-      const node = nodeData[nodeId];
-      console.log("Executing Node:", nodeId, node);
-      await exports.executeNode(node);
+      const node = nodeMap.get(nodeId);
+      if (!node) {
+        console.warn(`Node with id ${nodeId} not found`);
+        continue;
+      }
+      try{
+        console.log("Executing Node:", nodeId, node);
+        await exports.executeNode(node);
+      }catch(error){
+        console.log(`Error executing nodes`,err.message)
+      }
     }
-    res.status(200).json({ message: "Workflow Executed Sexxessfully" });
+    res.status(200).json({ message: "Workflow Executed Successfully" });
   } catch (error) {
     console.error("Error in execution of workflow", error.message, error.stack);
-    res
-      .status(500)
-      .json({
-        message: "Error in Executing Workflow",
-        error: error.message,
-        stack: error.stack,
-      });
+    res.status(500).json({
+      message: "Error in Executing Workflow",
+      error: error.message,
+      stack: error.stack,
+    });
   }
 };
 
 exports.executeNode = async (node) => {
-  // if else conditons
   const { type, data } = node;
-  switch (type) {
-    case "DelayNode":
+  const nodeType = type.toLowerCase(); // normalize
+
+  switch (nodeType) {
+    case "delaynode":
       await handleDelayNode(data);
       break;
-    case "EmailNode":
+    case "emailnode":
       await handleEmailNode(data);
       break;
-    case "PaymentNode":
+    case "paymentnode":
       await paymentHandleNode(data);
       break;
     default:
-      console.log("No Handler defined for this nodetype ");
+      console.log("No Handler defined for this node type:", nodeType);
   }
 };
 
@@ -95,16 +107,24 @@ exports.executeWorkflowById = async (req, res) => {
     if (!workflow) {
       return res.status(404).json({ message: "Workflow not found" });
     }
-    const { nodes, edges, nodeData } = workflow;
+
+    const { nodes, edges } = workflow;
     const sortedNodes = topologicalSort(nodes, edges);
-    // execution of nodes in order
+
+    const nodeMap = new Map();
+    nodes.forEach((node) => nodeMap.set(node.id, node));
+
     for (const nodeId of sortedNodes) {
-      const node = nodeData[nodeId];
+      const node = nodeMap.get(nodeId);
+      if (!node) {
+        console.warn(`Node with id ${nodeId} not found`);
+        continue;
+      }
       await exports.executeNode(node);
     }
     res.status(200).json({ message: "Workflow executed Successfully" });
   } catch (error) {
-    console.loge("error in execution of this workflow", error);
+    console.error("Error in execution of this workflow", error);
     res.status(500).json({ message: "Execution Failed", error });
   }
 };

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  TrendingDownIcon,
-  TrendingUpIcon,
-  LogOut,
-} from "lucide-react";
+import { TrendingDownIcon, TrendingUpIcon, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -23,6 +19,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Button } from "@/components/ui/button";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import avatar from "../assets/avatar.jpeg"
 
 const data = [
   { name: "Job 1", manual: 15, automated: 5 },
@@ -32,8 +31,27 @@ const data = [
 ];
 
 const DashBoard = () => {
+  const navigate = useNavigate();
   const handleLogout = () => {
+    localStorage.removeItem("token");
     alert("Logged out");
+    navigate("/login");
+  };
+
+  const getUserName = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return "Guest";
+    const decoded = jwtDecode(token);
+    console.log(decoded); // dekho kya aa raha hai token se
+    return decoded.name || "User";
+
+    // try {
+    //   const decoded = jwtDecode(token);
+    //   return decoded.name || "User";
+    // } catch (error) {
+    //   console.error("Token decode error", err);
+    //   return "User";
+    // }
   };
 
   return (
@@ -87,14 +105,14 @@ const DashBoard = () => {
         <Card className="w-full sm:w-[320px] flex-shrink-0">
           <CardHeader className="relative flex items-center gap-4">
             <img
-              src="https://i.pravatar.cc/80?img=12"
+              src={avatar}
               alt="avatar"
               className="rounded-full w-12 h-12 border"
             />
             <div>
               <CardDescription>Logged in as</CardDescription>
               <CardTitle className="text-xl font-semibold">
-                Adarsh Verma
+                {getUserName()}
               </CardTitle>
             </div>
           </CardHeader>

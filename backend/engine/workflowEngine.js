@@ -7,16 +7,17 @@ const topologicalSort = (nodes, edges) => {
   const graph = new Map();
 
   // Initialize graph and inDegree
-  nodes.forEach((node) => {
-    inDegree.set(node, 0);
-    graph.set(node, []);
-  });
+nodes.forEach((node) => {
+  inDegree.set(node.id, 0);
+  graph.set(node.id, []);
+});
+
 
   // Build graph and inDegree
-  edges.forEach(({ from, to }) => {
-    graph.get(from).push(to);
-    inDegree.set(to, inDegree.get(to) + 1);
-  });
+edges.forEach(({ source, target }) => {
+  graph.get(source).push(target);
+  inDegree.set(target, inDegree.get(target) + 1);
+});
 
   // Queue for nodes with 0 in-degree
   const queue = [];

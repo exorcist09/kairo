@@ -8,7 +8,14 @@ const WorkflowSchema = new mongoose.Schema({
   },
   nodes: {
     type: Array,
-    default: [],
+    default: [
+      {
+        id: String,
+        type: String, // like "emailNode"
+        data: Object, // data related to node (e.g., email body)
+        position: Object,
+      },
+    ],
   },
   edges: {
     type: Array,

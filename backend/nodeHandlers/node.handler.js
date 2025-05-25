@@ -1,32 +1,41 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const userModel = require("../models/user.model");
+const Stripe = require("stripe");
 
 // DelayNode
-const handleDelayNode = async (data) => {
-  const milisecond = data.delayInMinutes * 60 * 1000;
-  return new Promise((resolve) => setTimeout(resolve, milisecond));
+exports.handleDelayNode = async (data) => {
+  const delayMs = parseInt(data.delay) || 1000;
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
 };
 
 // Email Node
-const handleEmailNode = async (node) => {
+exports.handleEmailNode = async (data) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    service: "gmail", // or use Mailgun, SendGrid in production
     auth: {
-      user: process.env.EMAIL_ADDRESS,
-      pass: process.env.EMAIL_PASSWORD,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
+
+  const mailOptions = {
+    from: data.from || process.env.EMAIL_USER,
+    to: data.to,
+    subject: data.subject,
+    text: data.body,
+  };
+
+  await transporter.sendMail(mailOptions);
 };
 
-// Payment Node
-const paymentHandleNode = async (data) => {
-  // dummy placeholder for now
-  // TODO: -> cahnage it to specific data after the user links their account
-  console.log("Processing Payment");
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  return { status: "success", transactionId: "txn_123456789" };
-};
-
-module.exports = { handleDelayNode, handleEmailNode, paymentHandleNode };
+// // Payment Node
+// const stripe = new Stripe(process.env.STRIPE_SECRET);
+// exports.paymentHandleNode = async (data) => {
+//   await stripe.paymentIntents.create({
+//     amount: data.amount,
+//     currency: "usd",
+//     payment_method: data.paymentMethodId,
+//     confirm: true,
+//   });
+// };

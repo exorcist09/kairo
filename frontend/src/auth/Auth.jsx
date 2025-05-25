@@ -21,6 +21,7 @@ export default function Auth() {
     try {
       if (isLogin) {
         const res = await loginUser(formData.email, formData.password);
+        localStorage.setItem("token",res.data.token);
         console.log("Login Successful", res.data);
         navigate("/dashboard");
       } else {
@@ -34,7 +35,7 @@ export default function Auth() {
       }
     } catch (error) {
       console.error("Auth error:->", error.message || "Unknown error");
-      alert("Something went wrong");
+      alert(error.message);
     }
   };
 
@@ -99,7 +100,7 @@ export default function Auth() {
           </button>
         </div>
 
-        <div className="bg-gray-200 p-6 rounded-xl shadow-md w-80">
+        <div className="bg-gray-200 p-6 rounded-xl shadow-md w-80 hidden sm:block  md:block">
           <div className="space-y-6">
             <div className="p-4 border border-gray-700 rounded-md text-center font-medium">
               Job A
