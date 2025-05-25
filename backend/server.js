@@ -13,7 +13,7 @@ connectToDb();
 
 server.use(
   cors({
-    origin: "*", // or "*" during testing
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
