@@ -11,7 +11,7 @@ export const sendScheduledEmail = async (emailData, triggerData) => {
       sendAt: triggerData.time,
     };
 
-    const res = await axios.post("http://localhost:5000/api/send-email", payload);
+    const res = await axios.post("http://https://kairo-zuto.onrender.com/api/send-email", payload);
     return res.data;
   } catch (err) {
     throw err;
