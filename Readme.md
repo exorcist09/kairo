@@ -1,59 +1,97 @@
+<!-- #Kairo --> 
 
-<div>
-<img src="./frontend/src/assets/logo_readme.jpeg" alt="Kairo Logo" width="200"/><h2> Kairo - Job Schedular and Management Webapp</h2>
+<div style="display: flex; align-items: center; gap: 20px; justify-content: center;">
+  <img src="./frontend/src/assets/logo_readme.jpeg" alt="Kairo Logo" width="200"/>
+  <!-- <span style="font-weight: 900; font-size: 3em;">Job Scheduler and Workflow Management WebApp</span> -->
 </div>
 
 ---
+Kairo is a **visual job scheduler and workflow automation web application** built using the **MERN stack** with an interactive drag-and-drop flow editor powered by **React Flow**.
+It enables users to design, manage, and execute complex job sequences with an intuitive UI and scalable backend architecture.
 
-Kairo is a visual job scheduler built with the MERN stack and **React Flow** for an interactive flow editor. It allows users to create, manage, and visualize job sequences easily.
+---
 
 ##  Tech Stack
 
-- **Frontend**: React.js, Recharts, Shadcn, TailwindCSS, Axios
-- **FlowEditor**:React-Flow, ViewPort
-- **State Management**: Zustand
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose
-- **Authentication and other**: JWT (JSON Web Tokens) and Bcrypt
-- **Data Structure and Algorithm Used** : Binary tree flow is used in the execution of the workflow
+### **Frontend**
+* React.js
+* React Flow (interactive flow editor)
+* Zustand (state management)
+* Axios
+* TailwindCSS
+* Shadcn/UI
+* Recharts
+
+### **Backend**
+* Node.js
+* Express.js
+* Mongoose (MongoDB ORM)
+
+### **Database**
+* MongoDB (Cloud or Local)
+
+### **Authentication & Security**
+* JWT (JSON Web Token)
+* Bcrypt (Password hashing)
+
+### **Algorithms & Data Structures**
+* Binary-tree-based workflow execution
+* Graph-based node & edge management (React Flow)
 
 ---
 
 ##  Features
 
--  Connect jobs using an interactive flow editor (React Flow)
--  User authentication (JWT-based login/signup)
--  User-specific data using `createdBy` fields
--  Create, edit, delete, and manage job nodes
--  Auto-save and sync with backend
--  Scalable architecture for future workflow automation
+*  **Visual workflow builder** with drag-and-drop job nodes
+*  **Authentication system** with secure JWT-based login & signup
+*  **User-specific workflows** using `createdBy` fields
+*  Create, edit, delete, and configure job nodes
+*  **Auto-save workflows** and real-time syncing with the backend
+*  Persistent storage using MongoDB
+*  Modular and scalable backend for future automation features
+*  Dashboard for workflow stats (Recharts)
 
+---
 
-##  Getting Started
-
-### Prerequisites
-
-- Node.js & npm
-- MongoDB installed(offline) or Atlas cluster(online)
-
-### Setup to run locally 
-
-#### 1. Clone the repository
+##  Folder Structure
 
 ```bash
-git clone https://github.com/exorcist09/kairo.git
-cd kairo
-```
-#### 2. Setup Backend
-``` 
-cd backend
-npm install
-npm run dev
+kairo/
+│
+├── backend/        # Express server, controllers, routes, models
+│── frontend/       # React + React Flow UI
+│── README.md
+│── package.json
+└── ...
 ```
 
-#### 3. Setup Frontend
+##  Local Setup & Installation
+
+### **1. Clone the Repository**
+
+```bash
+git clone [https://github.com/exorcist09/kairo.git](https://github.com/exorcist09/kairo.git)
+cd kairo
 ```
-cd frontend
-npm install
+
+## 2. Backend Setup
+```bash
+cd backend
+npm ci
 npm run dev
+
+setup
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+PORT=5000
+```
+
+## 3. Frontend setup
+```bash
+cd frontend
+npm ci
+npm run dev
+
+setup
+VITE_BACKEND_URL=http://localhost:5000
 ```
