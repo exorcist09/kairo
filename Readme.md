@@ -11,28 +11,41 @@ It enables users to design, manage, and execute complex job sequences with an in
 
 ---
 
-##  Tech Stack
+##  Tech Stack To use in Future
 
 ### **Frontend**
-* React.js
+* NextJs(TS)
 * React Flow (interactive flow editor)
 * Zustand (state management)
+* TanStack Query
+* Zod, React Hook Form
 * Axios
 * TailwindCSS
-* Shadcn/UI
 * Recharts
 
 ### **Backend**
 * Node.js
 * Express.js
-* Mongoose (MongoDB ORM)
+* Prisma ORM
+* Docker
+
+### Unit Test
+* E2E playwrite
 
 ### **Database**
-* MongoDB (Cloud or Local)
+* PostgreSQL (Supabase)
 
 ### **Authentication & Security**
 * JWT (JSON Web Token)
 * Bcrypt (Password hashing)
+
+  ### Monitoring
+  * Sentry
+    ### API Documentation
+    * Scalar
+      ### Deployment
+      * AWS
+      * Github Actions
 
 ### **Algorithms & Data Structures**
 * Binary-tree-based workflow execution
